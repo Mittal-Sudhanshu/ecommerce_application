@@ -1,11 +1,13 @@
 // ignore_for_file: avoid_print
 
-import 'package:ecommerce/BLoC/login_bloc.dart';
-import 'package:ecommerce/screens/homePage.dart';
+import 'dart:math';
+
+import 'package:ecommerce/controllers/loginController.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 // import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -17,9 +19,11 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   Future login() async {}
   // var env = DotEnv(includePlatformEnvironment: true)..load();
+  loginController emails = Get.put(loginController());
+
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<LoginBloc>(context, listen: true);
+    // final bloc = Provider.of<LoginBloc>(context, listen: true);
 
     // print(dotenv.env['MAIN_URL']);
     // print(env);
@@ -46,28 +50,24 @@ class _LoginState extends State<Login> {
                   elevation: 20,
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: StreamBuilder(
-                      stream: bloc.loginEmail,
-                      builder: (context, AsyncSnapshot<String> snapshot) =>
-                          TextField(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TextField(
                         keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
+                        controller: emails.emailController,
+                        decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Email',
                             labelText: 'Email',
                             // ignore: prefer_null_aware_operators
-                            errorText: snapshot.error != null
-                                ? snapshot.error.toString()
-                                : null,
+                            // errorText: snapshot.error != null
+                            //     ? snapshot.error.toString()
+                            //     : null,
                             // errorText: snapshot.error as String,
-                            icon: const Icon(Icons.email)),
+                            icon: Icon(Icons.email)),
                         onChanged: (value) {
-                          bloc.changeLoginEmail(value);
+                          emails.emailController.obs;
                         },
-                      ),
-                    ),
-                  ),
+                      )),
                 ),
               ),
               Padding(
@@ -78,47 +78,43 @@ class _LoginState extends State<Login> {
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: StreamBuilder(
-                      stream: bloc.loginPassword,
-                      builder: (context, snapshot) => TextField(
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Password',
-                            // ignore: prefer_null_aware_operators
-                            errorText: snapshot.error != null
-                                ? snapshot.error.toString()
-                                : null,
-                            icon: const Icon(Icons.lock)),
-                        onChanged: (value) => bloc.changePassword(value),
-                      ),
+                    child: TextField(
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: true,
+                      controller: emails.passwordController,
+                      decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Password',
+                          // ignore: prefer_null_aware_operators
+                          // errorText: snapshot.error != null
+                          //     ? snapshot.error.toString()
+                          //     : null,
+                          icon: Icon(Icons.lock)),
+                      onChanged: (value) => emails.passwordController.obs,
                     ),
                   ),
                 ),
               ),
               Center(
-                  child: SizedBox(
-                width: 80,
-                child: StreamBuilder<Object>(
-                    stream: bloc.isValid,
-                    builder: (context, snapshot) {
-                      return ElevatedButton(
-                          onPressed: () async {
-                            snapshot.hasError || !snapshot.hasData
-                                ? print(snapshot.error)
-                                : await bloc.submit() == 201
-                                    ? Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => const Home()))
-                                    : null;
-                          },
-                          style: ButtonStyle(
-                              elevation: MaterialStateProperty.all(20)),
-                          child: const Text('Login'));
-                    }),
-              ))
+                child: SizedBox(
+                  width: 80,
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        emails.login();
+                        // snapshot.hasError || !snapshot.hasData
+                        //     ? print(snapshot.error)
+                        //     : await bloc.submit() == 201
+                        //         ? Navigator.pushReplacement(
+                        //             context,
+                        //             MaterialPageRoute(
+                        //                 builder: (context) => const Home()))
+                        //         : null;
+                      },
+                      style:
+                          ButtonStyle(elevation: MaterialStateProperty.all(20)),
+                      child: const Text('Login')),
+                ),
+              )
             ],
           ),
         ),

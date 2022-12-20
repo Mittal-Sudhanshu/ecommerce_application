@@ -1,13 +1,18 @@
 // ignore_for_file: file_names, unused_local_variable
 
-import 'package:ecommerce/BLoC/search_bloc.dart';
+import 'dart:convert';
+
+// import 'package:ecommerce/BLoC/search_bloc.dart';
 import 'package:ecommerce/widgets/homeWidget.dart';
 import 'package:ecommerce/widgets/menuWidget.dart';
 import 'package:ecommerce/widgets/profileWidget.dart';
+import 'package:ecommerce/widgets/wishlist.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
+import 'package:http/http.dart' as http;
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -16,13 +21,25 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
+// String? token;
+// final String url = "https://web-production-cec4.up.railway.app/detect";
+// var received;
+
 class _HomeState extends State<Home> {
+//   getToken() async {
+//     final prefs = await SharedPreferences.getInstance();
+//     setState(() {
+//       token = prefs.getString('token');
+//     });
+//   }
+
   int _selectedIndex = 0;
   late Razorpay _razorpay;
 
   @override
   void initState() {
     super.initState();
+    // getToken();
     _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
@@ -94,25 +111,36 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    var widgets = [buildHome(context), profile(context), menu(context)];
+    var widgets = [
+      buildHome(context),
+      wishlistWidget(context),
+      notificationWidget(context),
+      profile(
+        context,
+      ),
+    ];
     var size = MediaQuery.of(context).size;
-    final searchBloc = Provider.of<SearchBloc>(context, listen: true);
+    // final searchBloc = Provider.of<SearchBloc>(context, listen: true);
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        elevation: 200,
+        backgroundColor: Colors.grey,
+        unselectedItemColor: Colors.grey,
+        selectedItemColor: Colors.black,
+        elevation: 20,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.heart_broken),
+            label: 'Wishlist',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.horizontal_split_outlined),
-            label: 'Menu',
-          )
+            icon: Icon(Icons.notification_important_outlined),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(label: 'Profile', icon: Icon(Icons.person)),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

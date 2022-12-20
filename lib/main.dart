@@ -1,15 +1,16 @@
-import 'package:ecommerce/BLoC/login_bloc.dart';
-import 'package:ecommerce/BLoC/registration_bloc.dart';
-import 'package:ecommerce/BLoC/search_bloc.dart';
+// import 'package:ecommerce/BLoC/user_bloc.dart';
 import 'package:ecommerce/screens/login.dart';
 import 'package:ecommerce/screens/splash_screen.dart';
 import 'package:ecommerce/utils/themeClass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+// import 'package:provider/provider.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -19,17 +20,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<LoginBloc>(
-          create: (context) => LoginBloc(),
-        ),
-        Provider<SearchBloc>(
-          create: (context) => SearchBloc(),
-        ),
-        Provider<RegistrationBloc>(create: (context) => RegistrationBloc())
-      ],
-      child: MaterialApp(
+    return GetMaterialApp(
+      home: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeClass.lightTheme,
         darkTheme: ThemeClass.darkTheme,

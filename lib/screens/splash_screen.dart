@@ -3,45 +3,25 @@ import 'package:ecommerce/screens/homePage.dart';
 import 'package:ecommerce/screens/login.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashScreen extends StatefulWidget {
+GetStorage box = GetStorage();
+
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    getToken();
-  }
-
-  String? token;
-  getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    try {
-      setState(() {
-        token = prefs.getString('token');
-      });
-    } catch (er) {
-      if (kDebugMode) {
-        print(er);
-      }
-    }
-  }
-
+  // String? token;
   @override
   Widget build(BuildContext context) {
+    print(box.read('token'));
     return EasySplashScreen(
       logo: Image.asset('assets/logo.png'),
       title: const Text(
         'Ecommerce',
         style: TextStyle(fontSize: 18),
       ),
-      navigator: token == null ? const Login() : const Home(),
+      navigator: box.read('token') == null ? Login() : Home(),
     );
   }
 }

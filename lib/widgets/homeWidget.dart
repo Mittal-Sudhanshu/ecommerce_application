@@ -162,8 +162,11 @@ Widget buildHome(BuildContext context) {
 
                   // maxCrossAxisExtent: ,
                 ),
-                itemBuilder: (context, index) => ProductTile(
-                  productController.products[index],
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {},
+                  child: ProductTile(
+                    productController.products[index],
+                  ),
                 ),
               ),
             ),
@@ -173,44 +176,3 @@ Widget buildHome(BuildContext context) {
     ),
   );
 }
-//  GestureDetector(
-//                             onTap: () {},
-//                             child: Padding(
-//                               padding: const EdgeInsets.all(8.0),
-//                               child: Stack(
-//                                 alignment: Alignment.bottomCenter,
-//                                 children: [
-//                                   Stack(
-//                                     alignment: Alignment.topRight,
-//                                     children: [
-//                                       Container(
-//                                         decoration: BoxDecoration(
-//                                           // shape: ,
-//                                           borderRadius:
-//                                               BorderRadius.circular(20),
-//                                           image: const DecorationImage(
-//                                             fit: BoxFit.fill,
-//                                             image: NetworkImage(
-//                                               'https://rukminim1.flixcart.com/image/832/832/xif0q/kurta/p/g/0/-original-imagh3femsugzfgn.jpeg?q=70',
-//                                             ),
-//                                           ),
-//                                         ),
-//                                       ),
-//                                       IconButton(
-//                                           onPressed: () {},
-//                                           icon: const Icon(
-//                                             Icons.headphones,
-//                                             // color: Colors.amber,
-//                                           )),
-//                                     ],
-//                                   ),
-//                                   IconButton(
-//                                       onPressed: () {},
-//                                       icon: const Icon(
-//                                         Icons.shopping_bag,
-//                                         // color: Colors.black,
-//                                       )),
-//                                 ],
-//                               ),
-//                             ),
-//                           )

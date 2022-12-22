@@ -133,7 +133,7 @@ class _HomeState extends State<Home> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.heart_broken),
+            icon: Icon(Icons.favorite_border),
             label: 'Wishlist',
           ),
           BottomNavigationBarItem(

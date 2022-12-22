@@ -2,6 +2,7 @@ import 'package:ecommerce/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/image.dart' as Image;
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 // import 'package:shopx/models/product.dart';
 
 class ProductTile extends StatelessWidget {
@@ -11,7 +12,11 @@ class ProductTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
+      semanticContainer: T,
+      // color: Colors.greenAccent,
+      // shape: ,
+      elevation: 5,
+      borderOnForeground: false,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -20,29 +25,28 @@ class ProductTile extends StatelessWidget {
             Stack(
               children: [
                 Container(
-                  height: 50,
-                  // width: double.infinity,
+                  height: 60,
+                  width: double.infinity,
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Image.Image.network(
-                    product.image[1].url,
+                    product.image[0].url,
                     fit: BoxFit.cover,
                   ),
                 ),
                 Positioned(
-                  right: 0,
-                  child: Obx(() => CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: IconButton(
-                          icon: Icon(Icons.favorite_border),
-                          onPressed: () {
-                            // product.isFavorite.toggle();
-                          },
-                        ),
-                      )),
-                )
+                    right: 0,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: IconButton(
+                        icon: Icon(Icons.favorite_border),
+                        onPressed: () {
+                          // product.isFavorite.toggle();
+                        },
+                      ),
+                    ))
               ],
             ),
             SizedBox(height: 8),

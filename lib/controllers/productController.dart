@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class ProductController extends GetxController {
-  var products = <Products>[].obs;
+  var products;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -17,13 +17,10 @@ class ProductController extends GetxController {
 
   // var product = Products();
   void fetchProducts() async {
+    products = <Products>[].obs;
     final url = '${dotenv.env['MAIN_URL']}/products';
     var response = await http.get(Uri.parse(url), headers: Constants().header);
-    if (response.statusCode == 200) {
-      products.value = productsFromJson(response.body);
-
-      // print(products);
-      // print(jsonDecode(response.body)[1]);
-    }
+    products.value = productsFromJson(response.body);
+    // print(products);
   }
 }

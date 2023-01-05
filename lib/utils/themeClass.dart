@@ -3,22 +3,23 @@
 import 'package:flutter/material.dart';
 
 class ThemeClass {
-  static ThemeData lightTheme = ThemeData(
-      scaffoldBackgroundColor: Colors.white,
-      // accentColor: Colors.white,
-      colorScheme:
-          const ColorScheme.light(primary: Colors.blue, secondary: Colors.blue),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.blue,
-      ));
-
-  static ThemeData darkTheme = ThemeData(
-    scaffoldBackgroundColor: Colors.black,
-    colorScheme: const ColorScheme.dark(
-        secondary: Colors.blue, primary: Colors.blueAccent),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.black,
+  static ThemeData lightTheme = ThemeData.from(
+    colorScheme: const ColorScheme.light(),
+  ).copyWith(
+    pageTransitionsTheme: const PageTransitionsTheme(
+      builders: <TargetPlatform, PageTransitionsBuilder>{
+        TargetPlatform.android: ZoomPageTransitionsBuilder(),
+      },
     ),
-    primaryColorDark: Colors.black,
+  );
+
+  static ThemeData darkTheme = ThemeData.from(
+    colorScheme: const ColorScheme.dark(),
+  ).copyWith(
+    pageTransitionsTheme: const PageTransitionsTheme(
+      builders: <TargetPlatform, PageTransitionsBuilder>{
+        TargetPlatform.android: ZoomPageTransitionsBuilder(),
+      },
+    ),
   );
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:ecommerce/helperWidget/colorConstants.dart';
 import 'package:ecommerce/helperWidget/sizeutils.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +50,7 @@ class CustomIconButton extends StatelessWidget {
       padding: margin ?? EdgeInsets.zero,
       child: IconButton(
         iconSize: getSize(height ?? 0),
-        padding: EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
         icon: Container(
           alignment: Alignment.center,
           width: getSize(width ?? 0),
@@ -137,7 +139,7 @@ class CustomIconButton extends StatelessWidget {
             blurRadius: getHorizontalSize(
               2.00,
             ),
-            offset: Offset(
+            offset: const Offset(
               0,
               5,
             ),
@@ -157,7 +159,7 @@ class CustomIconButton extends StatelessWidget {
             blurRadius: getHorizontalSize(
               2.00,
             ),
-            offset: Offset(
+            offset: const Offset(
               0,
               4,
             ),

@@ -124,9 +124,10 @@ class CustomImageView extends StatelessWidget {
         fit: fit,
         imageUrl: url!,
         color: color,
-        placeholder: (context, url) => Container(
+        placeholder: (context, url) => SizedBox(
           height: 30,
           width: 30,
+          // decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
           child: LinearProgressIndicator(
             color: Colors.grey.shade200,
             backgroundColor: Colors.grey.shade100,
@@ -148,7 +149,6 @@ class CustomImageView extends StatelessWidget {
         color: color,
       );
     }
-    return SizedBox();
+    return const SizedBox();
   }
 }
-

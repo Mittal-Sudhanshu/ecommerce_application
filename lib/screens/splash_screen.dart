@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:ecommerce/screens/homePage.dart';
 import 'package:ecommerce/screens/login.dart';

@@ -2,8 +2,11 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ecommerce/controllers/productController.dart';
+import 'package:ecommerce/screens/cart_page.dart';
+import 'package:ecommerce/screens/product_screen.dart';
 import 'package:ecommerce/widgets/productTile.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -39,7 +42,10 @@ Widget buildHome(BuildContext context) {
                   ],
                 ),
                 IconButton(
-                    onPressed: () {}, icon: const Icon(Icons.shopping_bag)),
+                    onPressed: () {
+                      Get.to(() => const CartPage());
+                    },
+                    icon: Icon(FontAwesomeIcons.bagShopping)),
               ],
             ),
           ),
@@ -163,7 +169,10 @@ Widget buildHome(BuildContext context) {
                   // maxCrossAxisExtent: ,
                 ),
                 itemBuilder: (context, index) => GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(
+                        () => ProductScreen(productController.products[index]));
+                  },
                   child: ProductTile(
                     productController.products[index],
                   ),

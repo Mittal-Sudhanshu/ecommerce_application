@@ -1,4 +1,7 @@
+// ignore_for_file: unused_import
+
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:ecommerce/controllers/wishlist_controller.dart';
 import 'package:ecommerce/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/image.dart' as Image;
@@ -21,101 +24,124 @@ class ProductTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final WishlistController wishlistController = Get.put(WishlistController());
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
-          child: SizedBox(
-            height: getVerticalSize(
-              210.00,
-            ),
-            width: getHorizontalSize(
-              160.00,
-            ),
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: SizedBox(
-                    height: getVerticalSize(
-                      190.00,
-                    ),
-                    width: getHorizontalSize(
-                      160.00,
-                    ),
-                    child: Stack(
-                      alignment: Alignment.topRight,
-                      children: [
-                        CustomImageView(
-                          url: product.image[0].url,
-                          height: getVerticalSize(
-                            190.00,
-                          ),
-                          width: getHorizontalSize(
-                            160.00,
-                          ),
-                          alignment: Alignment.center,
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Card(
-                            clipBehavior: Clip.antiAlias,
-                            elevation: 5,
-                            margin: getMargin(
-                              top: 5,
-                              right: 5,
+          child: Material(
+            borderRadius: BorderRadius.circular(20),
+            child: SizedBox(
+              height: getVerticalSize(
+                210.00,
+              ),
+              width: getHorizontalSize(
+                160.00,
+              ),
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: SizedBox(
+                      height: getVerticalSize(
+                        190.00,
+                      ),
+                      width: getHorizontalSize(
+                        160.00,
+                      ),
+                      child: Stack(
+                        alignment: Alignment.topRight,
+                        children: [
+                          CustomImageView(
+                            url: product.image[0].url,
+                            radius: BorderRadius.circular(20),
+                            height: getVerticalSize(
+                              190.00,
                             ),
-                            color: ColorConstant.whiteA700Cc,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadiusStyle.roundedBorder15,
+                            width: getHorizontalSize(
+                              160.00,
                             ),
-                            child: Container(
-                              height: getSize(
-                                30.00,
+                            alignment: Alignment.center,
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Card(
+                              clipBehavior: Clip.antiAlias,
+                              elevation: 5,
+                              margin: getMargin(
+                                top: 5,
+                                right: 5,
                               ),
-                              width: getSize(
-                                30.00,
-                              ),
-                              padding: getPadding(
-                                all: 6,
-                              ),
-                              decoration:
-                                  AppDecoration.fillWhiteA700cc.copyWith(
+                              color: ColorConstant.whiteA700Cc,
+                              shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadiusStyle.roundedBorder15,
                               ),
-                              child: Stack(
-                                children: [
-                                  CustomImageView(
-                                    onTap: () {},
-                                    svgPath: ImageConstant.imgFavorite,
-                                    height: getSize(
-                                      18.00,
+                              child: Container(
+                                height: getSize(
+                                  30.00,
+                                ),
+                                width: getSize(
+                                  30.00,
+                                ),
+                                padding: getPadding(
+                                  all: 6,
+                                ),
+                                decoration:
+                                    AppDecoration.fillWhiteA700cc.copyWith(
+                                  borderRadius:
+                                      BorderRadiusStyle.roundedBorder15,
+                                ),
+                                child: Stack(
+                                  children: [
+                                    Obx(
+                                      () => CustomImageView(
+                                        onTap: () async {
+                                          wishlistController
+                                                  .checkWishlist(product.id)
+                                              ? await wishlistController
+                                                  .removeFromWishlist(
+                                                      product.id)
+                                              : await wishlistController
+                                                  .addToWishlist(product.id);
+                                          await wishlistController
+                                              .getWishlist();
+                                          wishlistController
+                                              .checkWishlist(product.id);
+                                        },
+                                        svgPath: !wishlistController
+                                                .checkWishlist(product.id)
+                                            ? ImageConstant.imgFavorite
+                                            : ImageConstant.imgFavorite44x44,
+                                        height: getSize(
+                                          18.00,
+                                        ),
+                                        width: getSize(
+                                          18.00,
+                                        ),
+                                        alignment: Alignment.center,
+                                      ),
                                     ),
-                                    width: getSize(
-                                      18.00,
-                                    ),
-                                    alignment: Alignment.center,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                CustomIconButton(
-                  height: 40,
-                  width: 40,
-                  alignment: Alignment.bottomCenter,
-                  child: CustomImageView(
-                    svgPath: ImageConstant.imgBag40x40,
+                  CustomIconButton(
+                    height: 40,
+                    width: 40,
+                    alignment: Alignment.bottomCenter,
+                    child: CustomImageView(
+                      svgPath: ImageConstant.imgBag40x40,
+                    ),
+                    onTap: () {},
                   ),
-                  onTap: () {},
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

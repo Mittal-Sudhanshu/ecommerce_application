@@ -15,14 +15,33 @@ class CartController extends GetxController {
 
   var cartItems = <CartModel>[].obs;
   getCartItems() async {
+    print('hua call');
     final url = '${dotenv.env['MAIN_URL']}/cart';
     var resposne =
         await http.get(Uri.parse(url), headers: Constants().authHeader);
     if (resposne.statusCode == 200) {
       cartItems.value = cartModelFromJson(resposne.body);
-      print(cartItems
-          .map((element) => element.productId.image.map((e) => e.url)));
+      print(cartItems.value);
     }
+  }
+
+  checkInCart(String id) {
+    for (var i in cartItems) {
+      if (i.productId.id == id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  updateCart(int count, String cartItemId) async {
+    print(count);
+    final url = '${dotenv.env['MAIN_URL']}/cart/$cartItemId';
+    var resposne = await http.patch(Uri.parse(url),
+        body: jsonEncode({"count": count}), headers: Constants().authHeader);
+    print(resposne.body);
+    print(resposne.statusCode);
+    await getCartItems();
   }
 
   addToCart(String productId) async {
@@ -30,6 +49,9 @@ class CartController extends GetxController {
     var resposne = await http.post(Uri.parse(url),
         headers: Constants().authHeader,
         body: jsonEncode({"productId": productId}));
+    print(resposne.statusCode);
+    print(resposne.body);
+
     return resposne.statusCode;
   }
 }

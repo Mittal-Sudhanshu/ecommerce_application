@@ -4,7 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ecommerce/controllers/wishlist_controller.dart';
 import 'package:ecommerce/models/product_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/image.dart' as Image;
+// import 'package:flutter/src/widgets/image.dart' as Image;
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,7 +20,7 @@ import '../helperWidget/sizeutils.dart';
 
 class ProductTile extends StatelessWidget {
   final Products product;
-  const ProductTile(this.product);
+  const ProductTile(this.product, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/wishlist_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -24,7 +25,7 @@ class WishlistController extends GetxController {
       wishlist.value = wishlistFromJson(response.body);
       // print(jsonDecode(response.body));
     } catch (er) {
-      throw Error;
+      print(er);
     }
   }
 
@@ -32,7 +33,7 @@ class WishlistController extends GetxController {
     // print(id);
     // print(wishlist.isEmpty);
     for (var i in wishlist) {
-      if (i.product == id) {
+      if (i.product?.id == id) {
         return true;
       }
     }
@@ -47,7 +48,7 @@ class WishlistController extends GetxController {
       // print(i.product == id ? true : false);
       // print(id);
       // print(id + "   " + i.product);
-      if (i.product == id) {
+      if (i.product!.id == id) {
         // print(id);
         return i.id;
       }

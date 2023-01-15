@@ -1,6 +1,4 @@
-// ignore_for_file: file_names, unused_local_variable, unused_import
-
-import 'dart:convert';
+// ignore_for_file: file_names
 
 // import 'package:ecommerce/BLoC/search_bloc.dart';
 import 'package:ecommerce/widgets/homeWidget.dart';
@@ -9,10 +7,9 @@ import 'package:ecommerce/widgets/profileWidget.dart';
 import 'package:ecommerce/widgets/wishlist.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -115,35 +112,43 @@ class _HomeState extends State<Home> {
       buildHome(context),
       wishlistWidget(context),
       notificationWidget(context),
-      profile(
-        context,
-      ),
+      profile(context),
     ];
     var size = MediaQuery.of(context).size;
     // final searchBloc = Provider.of<SearchBloc>(context, listen: true);
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.grey,
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Colors.black,
-        elevation: 20,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+      bottomNavigationBar: GNav(
+        rippleColor: Colors.grey[300]!,
+        hoverColor: Colors.grey[100]!,
+        gap: 8,
+        // activeColor: Colors.black,
+        activeColor: Colors.purple,
+        iconSize: 24,
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        duration: Duration(milliseconds: 400),
+        tabBackgroundColor: Colors.grey[100]!,
+        color: Colors.black,
+        // backgroundColor: Colors.grey,
+        // unselectedItemColor: Colors.grey,
+        // selectedItemColor: Colors.black,
+        // elevation: 20,
+        tabs: const [
+          GButton(
+            icon: Icons.home,
+            text: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border),
-            label: 'Wishlist',
+          GButton(
+            icon: Icons.favorite_border,
+            text: 'Wishlist',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notification_important_outlined),
-            label: 'Notifications',
+          GButton(
+            icon: Icons.notification_important_outlined,
+            text: 'Notifications',
           ),
-          BottomNavigationBarItem(label: 'Profile', icon: Icon(Icons.person)),
+          GButton(text: 'Profile', icon: Icons.person),
         ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        selectedIndex: _selectedIndex,
+        onTabChange: _onItemTapped,
       ),
       body: widgets[_selectedIndex],
     );

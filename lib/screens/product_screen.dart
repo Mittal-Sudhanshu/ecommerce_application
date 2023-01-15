@@ -1,13 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:ecommerce/controllers/counterController.dart';
+import 'package:ecommerce/controllers/cart_controller.dart';
 import 'package:ecommerce/controllers/wishlist_controller.dart';
 import 'package:ecommerce/helperWidget/appStyle.dart';
 import 'package:ecommerce/models/product_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../helperWidget/ImageConstans.dart';
 import '../helperWidget/appDecoration.dart';
@@ -26,44 +25,77 @@ class ProductScreen extends StatelessWidget {
     // ignore: unused_local_variable
     final WishlistController wishlistController = Get.put(WishlistController());
     final size = MediaQuery.of(context).size;
-    final CounterController counterController = Get.put(CounterController());
+    // final CounterController counterController = Get.put(CounterController());
+    final CartController cartController = Get.put(CartController());
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      bottomSheet: ButtonBar(
-        mainAxisSize: MainAxisSize.max,
-        // mainAxisAlignment: MainAxisAlignment.,
-        // crossAxisAlignment: CrossAxisAlignment,
-        // buttonMinWidth: size.width,
-        children: [
-          Obx(
-            () => !counterController.isVisible.value
-                ? GestureDetector(
-                    onTap: () {
-                      counterController.isVisible.value = true;
-                      counterController.incremet();
-                    },
-                    child: const ButtonBar(
-                      children: [
-                        Text('Add to Cart'),
-                        Icon(Icons.shopping_cart),
-                      ],
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Obx(
+          () => !cartController.checkInCart(product.id)
+              ? GestureDetector(
+                  onTap: () async {
+                    // counterController.isVisible.value = true;
+                    // counterController.incremet();
+                    // print(Stopwatch().start);
+                    // print(cartController.checkInCart(product.id));
+                    await cartController.addToCart(product.id);
+                    await cartController.getCartItems();
+                    await cartController.checkInCart(product.id);
+                    // cartController.checkInCart(product.id)
+                  },
+                  child: Material(
+                    color: Colors.purple,
+                    borderRadius: BorderRadius.circular(5),
+                    shadowColor: Colors.purple,
+                    elevation: 8,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.shopping_bag_outlined,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            'Add to Cart',
+                            style: GoogleFonts.poppins(color: Colors.white),
+                          )
+                        ],
+                      ),
                     ),
-                  )
-                : GestureDetector(
-                    onTap: () {},
-                    child: Text('Go to Cart'),
                   ),
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: const ButtonBar(
-              children: [
-                Text('Buy Now'),
-                Icon(Icons.shopping_cart),
-              ],
-            ),
-          )
-        ],
+                )
+              : GestureDetector(
+                  onTap: () {
+                    // counterController.isVisible.value = true;
+                    // counterController.incremet();
+                    // print(Stopwatch().start);
+                    // print(cartController.checkInCart(product.id));
+                    // cartController.addToCart(product.id);
+                  },
+                  child: Material(
+                    color: Colors.lightBlue,
+                    borderRadius: BorderRadius.circular(5),
+                    shadowColor: Colors.lightBlue,
+                    elevation: 8,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.shopping_bag_outlined),
+                          Text('Go to Cart')
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+        ),
       ),
       // appBar: AppBar(
       //   // bottom: ,
@@ -103,7 +135,9 @@ class ProductScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Stack(
                                 children: [
-                                  Container(
+                                  AnimatedContainer(
+                                    duration: const Duration(seconds: 5),
+                                    margin: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
                                       // color: Colors.grey,
                                       borderRadius: BorderRadius.circular(30),
@@ -199,41 +233,6 @@ class ProductScreen extends StatelessWidget {
                       product.title,
                       style: AppStyle.txtPoppinsBold20,
                     ),
-                    // Obx(
-                    //   () => Visibility(
-                    //     visible: counterController.isVisible.value,
-                    //     child: Row(
-                    //       children: [
-                    //         IconButton(
-                    //           enableFeedback:
-                    //               counterController.x > 0 ? true : false,
-                    //           onPressed: () {
-                    //             // ignore: unrelated_type_equality_checks
-                    //             if (counterController.x != 0) {
-                    //               counterController.decrement();
-                    //             }
-                    //           },
-                    //           icon: Icon(
-                    //             FontAwesomeIcons.minus,
-                    //             // ignore: unrelated_type_equality_checks
-                    //             color: counterController.x != 0
-                    //                 ? Colors.black
-                    //                 : Colors.grey,
-                    //           ),
-                    //         ),
-                    //         AutoSizeText(counterController.x.toString()),
-                    //         IconButton(
-                    //           onPressed: () {
-                    //             if (counterController.x < product.stock) {
-                    //               counterController.incremet();
-                    //             }
-                    //           },
-                    //           icon: const Icon(Icons.add),
-                    //         )
-                    //       ],
-                    //     ),
-                    //   ),
-                    // )
                   ],
                 ),
               ),
@@ -242,6 +241,13 @@ class ProductScreen extends StatelessWidget {
                 child: AutoSizeText(
                   product.details,
                   style: AppStyle.txtPoppinsSemiBold16,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: AutoSizeText(
+                  'Sold By: ${product.seller.name}',
+                  style: AppStyle.txtPoppinsRegular14,
                 ),
               ),
             ],

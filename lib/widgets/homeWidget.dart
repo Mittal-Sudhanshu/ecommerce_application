@@ -43,7 +43,8 @@ Widget buildHome(BuildContext context) {
                 ),
                 IconButton(
                     onPressed: () {
-                      Get.to(() => const CartPage());
+                      Get.to(() => CartPage(),
+                          transition: Transition.leftToRight);
                     },
                     icon: Icon(FontAwesomeIcons.bagShopping)),
               ],
@@ -171,7 +172,8 @@ Widget buildHome(BuildContext context) {
                 itemBuilder: (context, index) => GestureDetector(
                   onTap: () {
                     Get.to(
-                        () => ProductScreen(productController.products[index]));
+                        () => ProductScreen(productController.products[index]),
+                        transition: Transition.rightToLeftWithFade);
                   },
                   child: ProductTile(
                     productController.products[index],

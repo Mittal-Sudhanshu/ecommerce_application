@@ -17,7 +17,7 @@ class ProductController extends GetxController {
 
   IO.Socket? socket;
   initSocket() {
-    socket = IO.io('http://192.168.32.1:8000/', <String, dynamic>{
+    socket = IO.io('http://10.0.0.202:8000/', <String, dynamic>{
       'autoConnect': false,
       'transports': ['websocket'],
     });
@@ -25,6 +25,8 @@ class ProductController extends GetxController {
     socket?.onConnect((_) {
       print('Connection established');
       socket!.emit('msg', 'test');
+      socket!.on("checkout", (data) =>fetchProducts());
+      socket!.on("connection", (data) => print(data));
       socket!.emit('check', 'hello ');
     });
     socket?.onDisconnect((_) => print('Connection Disconnection'));
